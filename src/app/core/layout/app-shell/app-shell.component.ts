@@ -10,11 +10,11 @@ import {
 } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AppHeaderComponent } from './app-header.component';
-import { AppSidebarComponent } from './app-sidebar.component';
-import { IconComponent } from '../../shared/icon.component';
-import { UiService } from '../../shared/ui.service';
-import { navigation } from '../../shared/navigation';
+import { AppHeaderComponent } from '../app-header/app-header.component';
+import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { UiService } from '../../../shared/ui.service';
+import { navigation } from '../../../shared/navigation';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, AppHeaderComponent, AppSidebarComponent, IconComponent],

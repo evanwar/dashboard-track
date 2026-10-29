@@ -1,4 +1,4 @@
-@reference "../../../styles.css";
+@reference "../../../../styles.css";
 .nav-item {
   @apply flex min-h-11 items-center gap-3 rounded-lg px-3 py-3 text-[12px] font-medium text-muted hover:bg-hover hover:text-ink;
 }

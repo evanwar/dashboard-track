@@ -1,4 +1,4 @@
-@reference "../../../styles.css";
+@reference "../../../../styles.css";
 .desktop-sidebar {
   @apply fixed bottom-0 left-0 top-20 z-20 hidden w-[264px] overflow-y-auto border-r border-border/60 bg-sidebar lg:block;
 }

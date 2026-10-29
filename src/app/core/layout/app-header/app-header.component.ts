@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IconComponent } from '../../shared/icon.component';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 @Component({
   selector: 'app-header',
   imports: [IconComponent, RouterLink],

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { IconComponent } from './icon.component';
-import { UiService } from './ui.service';
+import { IconComponent } from '../icon/icon.component';
+import { UiService } from '../../ui.service';
 @Component({
   selector: 'app-json-viewer',
   imports: [IconComponent],

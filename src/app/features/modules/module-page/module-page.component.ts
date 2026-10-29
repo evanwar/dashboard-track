@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
-import { PageHeaderComponent } from '../../shared/page-header.component';
-import { StatCardComponent } from '../../shared/stat-card.component';
-import { StatusBadgeComponent } from '../../shared/status-badge.component';
-import { IconComponent } from '../../shared/icon.component';
-import { ActionModalComponent, ModalSelection } from '../../shared/action-modal.component';
-import { moduleDefinitions } from '../../mocks/modules';
-import { Action, DisplayRow } from '../../shared/models';
-import { UiService } from '../../shared/ui.service';
+import { PageHeaderComponent } from '../../../shared/components/page-header/page-header.component';
+import { StatCardComponent } from '../../../shared/components/stat-card/stat-card.component';
+import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
+import {
+  ActionModalComponent,
+  ModalSelection,
+} from '../../../shared/components/action-modal/action-modal.component';
+import { moduleDefinitions } from '../../../mocks/modules';
+import { Action, DisplayRow } from '../../../shared/models';
+import { UiService } from '../../../shared/ui.service';
 @Component({
   selector: 'app-module-page',
   imports: [

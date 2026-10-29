@@ -1,4 +1,4 @@
-@reference "../../../styles.css";
+@reference "../../../../styles.css";
 .filter-tab {
   @apply min-h-11 whitespace-nowrap border-b-2 border-transparent px-4 pb-3 text-xs text-muted hover:text-ink;
 }

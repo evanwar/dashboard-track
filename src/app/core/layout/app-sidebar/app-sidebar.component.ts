@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { IconComponent } from '../../shared/icon.component';
-import { navigation } from '../../shared/navigation';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { navigation } from '../../../shared/navigation';
 @Component({
   selector: 'app-sidebar',
   imports: [RouterLink, RouterLinkActive, IconComponent],

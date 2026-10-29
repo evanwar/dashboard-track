@@ -41,14 +41,18 @@ Para publicarlo, crea un repositorio remoto vacío, agrega su URL como remoto `o
 
 ## Estructura
 
-- `src/app/core/layout`: shell, encabezado, sidebar y navegación móvil.
-- `src/app/features/dashboard`: resumen y componentes de gráficas.
-- `src/app/features/modules`: composición de los seis módulos de gestión usando definiciones tipadas.
-- `src/app/shared`: componentes de presentación, modelos, navegación y notificaciones.
+- `src/app/core/layout/app-shell`, `app-header` y `app-sidebar`: cada componente de layout en su carpeta.
+- `src/app/features/dashboard/dashboard-page`: pantalla del resumen.
+- `src/app/features/dashboard/components`: gráficas, cada una en su carpeta.
+- `src/app/features/modules/module-page`: composición de los seis módulos de gestión usando definiciones tipadas.
+- `src/app/shared/components`: componentes de presentación, cada uno en su carpeta.
+- `src/app/shared`: modelos, navegación y servicio de notificaciones.
 - `src/app/mocks`: fixtures deterministas por dominio y configuración de tablas.
 - `src/styles.css`: tokens y primitivas reutilizables de Tailwind.
 
-Los componentes tienen TypeScript, HTML y CSS separados, salvo iconos y badges diminutos. El estado visual utiliza Signals; los eventos del Router se escuchan con limpieza automática. Los diálogos nativos proporcionan foco contenido, cierre con Escape y devolución del foco al control que los abrió.
+Todo componente se ubica en una carpeta con su nombre, incluidos iconos y badges. Sus archivos relacionados permanecen juntos. Los componentes tienen TypeScript, HTML y CSS separados, salvo las plantillas diminutas de iconos y badges. Al agregar componentes, conserva esta convención y actualiza sus imports, rutas diferidas y referencias de estilos.
+
+El estado visual utiliza Signals; los eventos del Router se escuchan con limpieza automática. Los diálogos nativos proporcionan foco contenido, cierre con Escape y devolución del foco al control que los abrió.
 
 ## Alcance de la demostración
 
