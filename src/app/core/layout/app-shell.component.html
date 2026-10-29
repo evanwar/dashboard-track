@@ -1,0 +1,65 @@
+<a href="#main" class="sr-only fixed left-5 top-3 z-50 rounded bg-primary p-3 focus:not-sr-only"
+  >Saltar al contenido</a
+>
+<app-header
+  [title]="title()"
+  [collapsed]="collapsed()"
+  (toggleSidebar)="toggleSidebar()"
+  (notify)="ui.notify($event)"
+/>
+<aside id="app-navigation" class="desktop-sidebar" [class.sidebar-small]="collapsed()">
+  <app-sidebar
+    [collapsed]="collapsed()"
+    (help)="
+      ui.notify(
+        'Explora los módulos desde el menú. Busca, filtra y abre detalles; todas las operaciones son simuladas.'
+      )
+    "
+  />
+</aside>
+<dialog
+  #mobileDialog
+  class="mobile-dialog"
+  aria-label="Menú de navegación"
+  (cancel)="mobileOpen.set(false)"
+  (click)="$event.target === mobileDialog && mobileOpen.set(false)"
+>
+  <div class="flex items-center justify-between border-b border-border px-5 py-3">
+    <span class="font-semibold">Navegación</span
+    ><button class="icon-btn" aria-label="Cerrar navegación" (click)="mobileOpen.set(false)">
+      <app-icon name="close" />
+    </button>
+  </div>
+  <app-sidebar
+    (navigate)="mobileOpen.set(false)"
+    (help)="mobileOpen.set(false); ui.notify('Nexo es una maqueta navegable con datos de demostración.')"
+  />
+</dialog>
+<main id="main" class="main-content" [class.main-wide]="collapsed()" tabindex="-1">
+  <router-outlet />
+  <footer
+    class="mt-8 flex flex-wrap items-center justify-between gap-2 border-t border-border/50 pt-5 text-[10px] text-muted"
+  >
+    <span>© 2026 Nexo. Panel de administración.</span
+    ><span class="flex items-center gap-1.5"
+      ><app-icon name="shield" [size]="12" />Datos ficticios · Sin operaciones reales</span
+    >
+  </footer>
+</main>
+@if (ui.toast()) {
+  <div
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-6 right-4 z-50 flex max-w-[calc(100vw-2rem)] items-start gap-3 rounded-xl border border-success/30 bg-sidebar px-5 py-4 text-sm shadow-xl sm:right-7 sm:max-w-md"
+  >
+    <app-icon name="success" class="text-success" />
+    <p class="leading-6">{{ ui.toast() }}</p>
+    <button
+      class="ml-2 rounded text-muted hover:text-white"
+      aria-label="Cerrar notificación"
+      (click)="ui.toast.set('')"
+    >
+      <app-icon name="close" [size]="17" />
+    </button>
+  </div>
+}

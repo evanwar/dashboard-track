@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "nexo": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "index": "src/index.html",
+            "tsConfig": "tsconfig.app.json",
+            "styles": ["src/styles.css"],
+            "outputPath": "dist/nexo"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "all",
+              "budgets": [{ "type": "initial", "maximumWarning": "750kB", "maximumError": "1MB" }]
+            },
+            "development": { "optimization": false, "sourceMap": true }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": { "development": { "buildTarget": "nexo:build:development" } },
+          "defaultConfiguration": "development"
+        }
+      }
+    }
+  },
+  "cli": { "analytics": false }
+}

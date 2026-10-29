@@ -1,0 +1,75 @@
+<nav aria-label="Navegación principal" class="flex h-full flex-col px-4 pb-5 pt-7">
+  <div class="mb-5 flex items-center gap-2.5 rounded-lg border border-border bg-page/30 px-3 py-3">
+    <span class="size-2 shrink-0 rounded-full bg-success"></span>
+    @if (!collapsed()) {
+      <span class="text-xs text-muted">Espacio de demostración</span
+      ><span class="ml-auto rounded bg-hover px-1.5 py-0.5 text-[9px] font-bold text-info">DEMO</span>
+    }
+  </div>
+  @for (group of navigation; track group.label) {
+    <div class="mb-4">
+      @if (!collapsed()) {
+        <button
+          class="eyebrow mb-1 flex min-h-9 w-full items-center justify-between rounded px-3 hover:text-ink"
+          [attr.aria-expanded]="expanded()[group.label]"
+          (click)="toggleGroup(group.label)"
+        >
+          {{ group.label }}<app-icon [name]="expanded()[group.label] ? 'down' : 'right'" [size]="12" />
+        </button>
+      }
+      @if (collapsed() || expanded()[group.label]) {
+        <div class="space-y-1">
+          @for (item of group.items; track item.path) {
+            <a
+              [routerLink]="item.path"
+              routerLinkActive="nav-active"
+              ariaCurrentWhenActive="page"
+              [attr.title]="collapsed() ? item.label : null"
+              [attr.aria-label]="item.label"
+              class="nav-item"
+              [class.justify-center]="collapsed()"
+              (click)="navigate.emit()"
+              ><app-icon [name]="item.icon" />
+              @if (!collapsed()) {
+                <span class="flex-1">{{ item.label }}</span>
+                @if ('count' in item) {
+                  <span class="rounded bg-page/70 px-1.5 py-0.5 text-[10px] text-muted">{{
+                    item.count
+                  }}</span>
+                }
+              }
+            </a>
+          }
+        </div>
+      }
+    </div>
+  }
+  <div class="mt-auto pt-8">
+    @if (!collapsed()) {
+      <div class="mb-5 rounded-lg border border-border bg-page/25 p-4">
+        <div class="mb-2 flex items-center gap-2 text-xs font-semibold">
+          <app-icon name="shield" [size]="16" />Tu entorno de pruebas
+        </div>
+        <p class="text-[11px] leading-relaxed text-muted">
+          Explora con tranquilidad. Todas las acciones son simuladas.
+        </p>
+      </div>
+    }
+    <button
+      class="nav-item w-full"
+      [class.justify-center]="collapsed()"
+      (click)="help.emit()"
+      aria-label="Centro de ayuda"
+    >
+      <app-icon name="help" />
+      @if (!collapsed()) {
+        <span>Centro de ayuda</span><app-icon name="upRight" [size]="14" />
+      }
+    </button>
+    @if (!collapsed()) {
+      <div class="mt-4 px-3 text-[10px] text-muted/70">
+        Nexo Admin <span class="float-right">v1.0.0</span>
+      </div>
+    }
+  </div>
+</nav>

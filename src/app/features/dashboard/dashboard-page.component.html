@@ -1,0 +1,151 @@
+<app-page-header
+  title="Una visión clara de tu operación"
+  description="Bienvenido, Alex. Este es el resumen de tu espacio de trabajo."
+  category="Dashboard general"
+  ><span
+    class="flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2.5 text-xs text-muted"
+    ><app-icon name="calendar" [size]="16" />29 de octubre, 2026</span
+  ><button
+    class="icon-btn border border-border bg-surface"
+    aria-label="Actualizar resumen de demostración"
+    (click)="ui.notify('Resumen actualizado con los mismos datos de demostración')"
+  >
+    <app-icon name="refresh" [size]="17" /></button
+></app-page-header>
+<div class="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+  @for (metric of metrics; track metric.label) {
+    <app-stat-card [metric]="metric" />
+  }
+</div>
+<div class="mb-6 grid gap-5 xl:grid-cols-[minmax(0,2.25fr)_minmax(280px,1fr)]">
+  <section class="panel min-w-0 p-5 md:p-6">
+    <div class="mb-5 flex flex-wrap items-start justify-between gap-4">
+      <div>
+        <h2 class="text-base font-semibold">Actividad de solicitudes</h2>
+        <p class="mt-1 text-[11px] text-muted">
+          {{
+            period() === 'Mes'
+              ? '01 – 29 de octubre, 2026'
+              : period() === 'Semana'
+                ? '23 – 29 de octubre, 2026'
+                : '29 de octubre, 2026 · por hora'
+          }}
+        </p>
+      </div>
+      <div class="flex rounded-lg bg-page/80 p-1" aria-label="Período de actividad">
+        @for (periodItem of ['Día', 'Semana', 'Mes']; track periodItem) {
+          <button
+            class="period-button"
+            [class.period-active]="period() === periodItem"
+            [attr.aria-pressed]="period() === periodItem"
+            (click)="period.set(periodItem)"
+          >
+            {{ periodItem }}
+          </button>
+        }
+      </div>
+    </div>
+    <div class="mb-0 flex flex-wrap gap-6 px-1">
+      <div>
+        <span class="flex items-center gap-2 text-[11px] text-muted"
+          ><span class="size-2 rounded-full bg-info"></span>Solicitudes correctas</span
+        >
+        <p class="mt-2 text-[22px] font-semibold">
+          {{ period() === 'Mes' ? '1,284,560' : period() === 'Semana' ? '342,180' : '47,948'
+          }}<span class="ml-2 text-[10px] font-medium text-success">+18.4%</span>
+        </p>
+      </div>
+      <div>
+        <span class="flex items-center gap-2 text-[11px] text-muted"
+          ><span class="size-2 rounded-full bg-primary"></span>Solicitudes fallidas</span
+        >
+        <p class="mt-2 text-[22px] font-semibold">
+          {{ period() === 'Mes' ? '18,240' : period() === 'Semana' ? '4,860' : '681'
+          }}<span class="ml-2 text-[10px] font-medium text-muted">Datos mock</span>
+        </p>
+      </div>
+    </div>
+    <app-activity-chart [period]="period()" />
+    <div
+      class="mt-1 flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-4 text-[10px] text-muted"
+    >
+      <span class="flex items-center gap-1.5"
+        ><span class="size-1.5 rounded-full bg-success"></span>Última actualización de ejemplo: 10:42 h</span
+      ><span>Volumen de solicitudes · miles</span>
+    </div>
+  </section>
+  <section class="panel p-5 md:p-6"><app-weekly-chart /></section>
+</div>
+<section class="panel mb-6 overflow-hidden">
+  <div class="flex items-center justify-between px-5 py-4 md:px-6">
+    <div class="flex items-center gap-2.5">
+      <h2 class="text-base font-semibold">Actividad reciente</h2>
+      <span class="rounded bg-hover px-2 py-0.5 text-[10px] text-muted">{{ activity.length }} eventos</span>
+    </div>
+    <a routerLink="/logs/apis" class="text-link text-xs"
+      >Ver auditoría<app-icon name="arrow" [size]="15"
+    /></a>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col">Fecha y hora</th>
+          <th scope="col">Módulo</th>
+          <th scope="col">Actividad</th>
+          <th scope="col">Identificador</th>
+          <th scope="col">Resultado</th>
+          <th scope="col" class="text-right">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (event of activity; track event.id) {
+          <tr>
+            <td>
+              <span class="block text-xs">{{ event.time }}</span
+              ><span class="mt-1 block text-[10px] text-muted">{{ event.date }}</span>
+            </td>
+            <td>
+              <span class="flex items-center gap-2 text-xs text-muted"
+                ><app-icon [name]="event.icon" [size]="16" />{{ event.module }}</span
+              >
+            </td>
+            <td class="text-xs">{{ event.event }}</td>
+            <td class="font-mono text-[11px] text-muted">{{ event.id }}</td>
+            <td><app-status [label]="event.status" /></td>
+            <td class="text-right">
+              <button class="text-link text-xs" (click)="showDetail(event.id)">
+                Ver detalle<app-icon name="right" [size]="14" />
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+<section>
+  <div class="mb-3 flex items-center justify-between">
+    <h2 class="text-sm font-semibold">Accesos rápidos</h2>
+    <span class="text-[10px] text-muted">Todo a un clic</span>
+  </div>
+  <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    @for (link of quickLinks; track link.path) {
+      <a
+        [routerLink]="link.path"
+        class="panel flex items-center gap-3 p-4 hover:border-info/40 hover:bg-hover/60"
+        ><span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-hover text-info"
+          ><app-icon [name]="link.icon" [size]="18" /></span
+        ><span class="min-w-0 flex-1"
+          ><span class="block text-xs font-medium">{{ link.title }}</span
+          ><span class="mt-1 block text-[10px] text-muted">{{ link.note }}</span></span
+        ><app-icon name="right" [size]="16" class="text-muted"
+      /></a>
+    }
+  </div>
+</section>
+<app-action-modal
+  [selection]="selection()"
+  [definition]="detailDefinition()"
+  (closed)="selection.set(null)"
+/>

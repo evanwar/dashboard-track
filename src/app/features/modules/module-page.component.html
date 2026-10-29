@@ -1,0 +1,226 @@
+<app-page-header
+  [title]="definition().title"
+  [description]="definition().description"
+  [category]="definition().category"
+  ><span
+    class="hidden items-center gap-2 rounded-lg border border-border px-3 py-2.5 text-xs text-muted sm:flex"
+    ><app-icon name="calendar" [size]="16" />29 de octubre, 2026</span
+  ></app-page-header
+>
+<div
+  class="mb-7 grid gap-4 sm:grid-cols-2"
+  [class.xl:grid-cols-4]="definition().metrics.length === 4"
+  [class.xl:grid-cols-3]="definition().metrics.length === 3"
+>
+  @for (metric of definition().metrics; track metric.label) {
+    <app-stat-card [metric]="metric" />
+  }
+</div>
+@if (module() === 'deletion') {
+  <div
+    class="mb-6 flex items-start gap-3 rounded-xl border border-danger/20 bg-danger/5 p-4 text-xs leading-6 text-muted"
+  >
+    <app-icon name="alert" class="mt-0.5 text-danger" />
+    <p>
+      <strong class="text-danger">Flujo de eliminación de demostración.</strong> Busca únicamente los
+      teléfonos enmascarados de la tabla. Las confirmaciones no eliminan ni ocultan cuentas.
+    </p>
+  </div>
+}
+<section class="panel overflow-hidden" [attr.aria-label]="definition().title">
+  <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 px-5 py-5">
+    <div class="flex items-center gap-3">
+      <span class="flex size-9 items-center justify-center rounded-lg bg-hover text-info"
+        ><app-icon [name]="definition().icon" [size]="19"
+      /></span>
+      <div>
+        <h2 class="text-sm font-semibold">
+          {{ module() === 'logs' ? 'Registro de peticiones' : 'Listado de ' + definition().noun }}
+        </h2>
+        <p class="mt-1 text-[11px] text-muted">
+          {{ definition().rows.length }} registros ficticios disponibles
+        </p>
+      </div>
+    </div>
+    <span class="rounded-full border border-info/20 bg-info/5 px-2.5 py-1 text-[10px] text-info"
+      >Solo demostración</span
+    >
+  </div>
+  @if (definition().tabs; as tabs) {
+    <div
+      class="flex gap-1 overflow-x-auto border-b border-border/60 px-5 pt-3"
+      aria-label="Estado de las solicitudes"
+    >
+      @for (tab of tabs; track tab) {
+        <button
+          class="filter-tab"
+          [class.selected]="status() === tab"
+          [attr.aria-pressed]="status() === tab"
+          (click)="setStatus(tab)"
+        >
+          {{ tab }}
+        </button>
+      }
+    </div>
+  }
+  <div class="flex flex-wrap items-end gap-3 p-5">
+    <label class="min-w-[180px] flex-1 text-[11px] text-muted" for="module-search"
+      >{{ module() === 'deletion' ? 'Buscar por teléfono de ejemplo' : 'Buscar en el listado' }}
+      <div class="relative mt-1.5">
+        <app-icon
+          name="search"
+          [size]="17"
+          class="pointer-events-none absolute left-3 top-3 text-muted"
+        /><input
+          #searchInput
+          id="module-search"
+          class="field pl-10"
+          [placeholder]="
+            module() === 'deletion' ? 'Ej. 0201 o CTA-1058' : 'Buscar por nombre, ID o teléfono…'
+          "
+          [value]="search()"
+          (input)="setSearch(searchInput.value)"
+        /></div
+    ></label>
+    @if (definition().filters.length) {
+      <label class="text-[11px] text-muted" for="module-status"
+        >{{ module() === 'logs' ? 'Respuesta HTTP' : 'Estado'
+        }}<select
+          #statusSelect
+          id="module-status"
+          class="field mt-1.5 min-w-36"
+          [value]="status()"
+          (change)="setStatus(statusSelect.value)"
+        >
+          <option value="Todos">Todos los estados</option>
+          @for (filter of definition().filters; track filter) {
+            <option [value]="filter">{{ filter }}</option>
+          }
+        </select></label
+      >
+    }
+    @if (definition().secondaryFilters; as filters) {
+      <label class="text-[11px] text-muted" for="module-type"
+        >{{ module() === 'logs' ? 'Método' : 'Tipo'
+        }}<select
+          #typeSelect
+          id="module-type"
+          class="field mt-1.5 min-w-32"
+          [value]="secondary()"
+          (change)="setSecondary(typeSelect.value)"
+        >
+          <option value="Todos">Todos</option>
+          @for (filter of filters; track filter) {
+            <option [value]="filter">{{ filter }}</option>
+          }
+        </select></label
+      >
+    }
+    @if (module() === 'logs') {
+      <label class="text-[11px] text-muted" for="module-date"
+        >Fecha<input
+          #dateInput
+          id="module-date"
+          type="date"
+          class="field mt-1.5"
+          [value]="date()"
+          (input)="setDate(dateInput.value)"
+      /></label>
+    }
+    <button class="btn" (click)="clear()"><app-icon name="refresh" [size]="15" />Restablecer</button>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          @for (column of definition().columns; track column.key) {
+            <th scope="col">{{ column.label }}</th>
+          }
+          <th scope="col" class="text-right">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of visibleRows(); track row.id) {
+          <tr>
+            @for (column of definition().columns; track column.key) {
+              <td>
+                @switch (column.kind) {
+                  @case ('badge') {
+                    <app-status [label]="row.cells[column.key]" />
+                  }
+                  @case ('mono') {
+                    <span class="font-mono text-xs text-muted">{{ row.cells[column.key] }}</span>
+                  }
+                  @case ('person') {
+                    <span class="flex items-center gap-2.5"
+                      ><span
+                        class="flex size-8 items-center justify-center rounded-lg bg-info/10 text-[10px] font-semibold text-info"
+                        >{{ row.cells[column.key].slice(0, 2).toUpperCase() }}</span
+                      ><span class="text-xs font-medium">{{ row.cells[column.key] }}</span></span
+                    >
+                  }
+                  @default {
+                    <span class="text-xs text-muted">{{ row.cells[column.key] }}</span>
+                  }
+                }
+              </td>
+            }
+            <td>
+              <div class="flex justify-end gap-2">
+                @for (action of definition().actions; track action.kind) {
+                  <button
+                    class="table-action"
+                    [class.destructive]="action.kind === 'delete'"
+                    [disabled]="disabled(row, action)"
+                    [attr.title]="disabled(row, action) ? 'El usuario no está bloqueado' : action.label"
+                    (click)="open(row, action)"
+                  >
+                    <app-icon [name]="action.icon" [size]="15" />{{ action.label }}
+                  </button>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  @if (!filtered().length) {
+    <div class="flex flex-col items-center px-5 py-16 text-center" role="status">
+      <span class="mb-4 flex size-14 items-center justify-center rounded-full bg-hover text-muted"
+        ><app-icon name="search" [size]="26"
+      /></span>
+      <h3 class="mb-2 font-medium">No encontramos resultados</h3>
+      <p class="mb-5 max-w-sm text-sm text-muted">
+        Prueba con otro término o restablece los filtros para ver los registros de demostración.
+      </p>
+      <button class="btn" (click)="clear()">Restablecer filtros</button>
+    </div>
+  }
+  <div class="flex flex-wrap items-center justify-between gap-3 border-t border-border/60 px-5 py-4">
+    <p class="text-[11px] text-muted" aria-live="polite">
+      Mostrando {{ rangeStart() }}–{{ rangeEnd() }} de {{ filtered().length }} {{ definition().noun }}
+    </p>
+    <div class="flex items-center gap-2">
+      <button
+        class="btn min-h-9 px-3 text-xs"
+        [disabled]="page() === 1"
+        (click)="page.update((previous) => previous - 1)"
+      >
+        Anterior</button
+      ><span class="px-2 text-xs text-muted">{{ page() }} / {{ pageCount() }}</span
+      ><button
+        class="btn min-h-9 px-3 text-xs"
+        [disabled]="page() === pageCount()"
+        (click)="page.update((previous) => previous + 1)"
+      >
+        Siguiente
+      </button>
+    </div>
+  </div>
+</section>
+<div class="mt-5 flex items-center gap-2 text-[11px] text-muted">
+  <app-icon name="shield" [size]="14" />Todos los identificadores y números están anonimizados y son
+  ficticios.
+</div>
+<app-action-modal [selection]="selection()" [definition]="definition()" (closed)="selection.set(null)" />

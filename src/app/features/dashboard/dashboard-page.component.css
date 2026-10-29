@@ -1,0 +1,7 @@
+@reference "../../../styles.css";
+.period-button {
+  @apply min-h-9 rounded-md px-3 text-[11px] font-medium text-muted hover:text-white;
+}
+.period-active {
+  @apply bg-hover text-ink shadow-sm;
+}

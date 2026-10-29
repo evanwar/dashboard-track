@@ -1,0 +1,13 @@
+@reference "../../../styles.css";
+.filter-tab {
+  @apply min-h-11 whitespace-nowrap border-b-2 border-transparent px-4 pb-3 text-xs text-muted hover:text-ink;
+}
+.filter-tab.selected {
+  @apply border-primary text-ink;
+}
+.table-action {
+  @apply flex min-h-11 items-center justify-center gap-2 rounded-lg px-2 text-[11px] font-medium text-info hover:bg-info/10 disabled:text-muted;
+}
+.table-action.destructive {
+  @apply text-danger hover:bg-danger/10;
+}

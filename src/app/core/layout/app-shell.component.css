@@ -1,0 +1,19 @@
+@reference "../../../styles.css";
+.desktop-sidebar {
+  @apply fixed bottom-0 left-0 top-20 z-20 hidden w-[264px] overflow-y-auto border-r border-border/60 bg-sidebar lg:block;
+}
+.sidebar-small {
+  @apply w-[84px];
+}
+.main-content {
+  @apply min-h-screen px-4 pb-6 pt-[108px] sm:px-7 lg:ml-[264px] xl:px-8;
+}
+.main-wide {
+  @apply lg:ml-[84px];
+}
+.mobile-dialog {
+  @apply fixed inset-y-0 left-0 right-auto m-0 h-dvh max-h-dvh w-[290px] max-w-[90vw] border-0 bg-sidebar p-0 text-ink;
+}
+.mobile-dialog::backdrop {
+  background: rgb(8 16 28 / 70%);
+}

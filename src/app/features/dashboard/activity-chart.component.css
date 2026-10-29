@@ -1,0 +1,13 @@
+.grid-line {
+  stroke: #526176;
+  stroke-opacity: 0.22;
+  stroke-width: 1;
+}
+.vertical {
+  stroke-opacity: 0.12;
+}
+.axis-label {
+  fill: #a5b4c8;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 11px;
+}

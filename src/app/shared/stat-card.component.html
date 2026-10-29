@@ -1,0 +1,21 @@
+<article class="panel h-full p-5 xl:p-6">
+  <div class="mb-5 flex items-center justify-between">
+    <div class="flex size-11 items-center justify-center rounded-full bg-hover text-info">
+      <app-icon [name]="metric().icon" [size]="22" />
+    </div>
+    <span class="text-[10px] tracking-wide text-muted">DATOS DEMO</span>
+  </div>
+  <div class="mb-1.5 text-[29px] font-semibold leading-tight tracking-tight">{{ metric().value }}</div>
+  <div class="flex flex-wrap items-center justify-between gap-2">
+    <h2 class="text-sm text-muted">{{ metric().label }}</h2>
+    @if (metric().trend) {
+      <span
+        class="flex items-center gap-1 text-xs"
+        [class.text-warning]="metric().tone === 'warning'"
+        [class.text-success]="metric().tone !== 'warning'"
+        >{{ metric().trend }}<app-icon name="upRight" [size]="14"
+      /></span>
+    }
+  </div>
+  <p class="mt-4 border-t border-border/60 pt-3 text-[11px] text-muted">{{ metric().note }}</p>
+</article>

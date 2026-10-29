@@ -1,0 +1,232 @@
+<dialog
+  #dialog
+  class="action-dialog"
+  aria-labelledby="modal-title"
+  aria-describedby="modal-description"
+  (cancel)="closed.emit()"
+  (click)="$event.target === dialog && closed.emit()"
+>
+  @if (selection(); as selected) {
+    <div class="flex items-start justify-between gap-4 border-b border-border p-5 sm:p-6">
+      <div>
+        <div
+          class="mb-3 flex items-center gap-2 text-xs"
+          [class.text-danger]="kind() === 'delete'"
+          [class.text-info]="kind() !== 'delete'"
+        >
+          <app-icon [name]="selected.action.icon" [size]="18" />{{ definition().category }}
+        </div>
+        <h2 id="modal-title" class="text-xl font-semibold">{{ title() }}</h2>
+        <p id="modal-description" class="mt-2 text-xs leading-5 text-muted">
+          Datos ficticios · {{ selected.row.id }} · Entorno de demostración
+        </p>
+      </div>
+      <button autofocus class="icon-btn -mr-2 -mt-2" aria-label="Cerrar diálogo" (click)="closed.emit()">
+        <app-icon name="close" />
+      </button>
+    </div>
+    <div class="space-y-5 p-5 sm:p-6">
+      @if (
+        kind() === 'delete' ||
+        kind() === 'unlock' ||
+        kind() === 'balance' ||
+        kind() === 'control' ||
+        kind() === 'review'
+      ) {
+        <div
+          class="rounded-lg border p-4 text-xs leading-6"
+          [class.border-danger/25]="kind() === 'delete'"
+          [class.bg-danger/10]="kind() === 'delete'"
+          [class.text-danger]="kind() === 'delete'"
+          [class.border-info/20]="kind() !== 'delete'"
+          [class.bg-info/5]="kind() !== 'delete'"
+          [class.text-info]="kind() !== 'delete'"
+        >
+          <div class="mb-1 flex items-center gap-2 font-semibold">
+            <app-icon [name]="kind() === 'delete' ? 'alert' : 'shield'" [size]="17" />{{
+              kind() === 'delete' ? 'Revisión de acción destructiva' : 'Solo simulación'
+            }}
+          </div>
+          @if (kind() === 'delete') {
+            En un sistema real esta acción podría eliminar la cuenta. Aquí no se borran ni se ocultan
+            registros.
+          } @else if (kind() === 'unlock') {
+            En un sistema real esta acción permitiría nuevamente el acceso del usuario. Esta demostración no
+            modifica el bloqueo.
+          } @else {
+            Ninguna acción modifica datos, saldos, permisos o dispositivos.
+          }
+        </div>
+      }
+      @if (kind() === 'decrypted') {
+        <p class="text-sm leading-6 text-muted">
+          Contenido simulado previamente preparado. La vista no utiliza claves ni realiza descifrado.
+        </p>
+        <div class="flex rounded-lg bg-page p-1">
+          <button
+            class="tab flex-1"
+            [class.active]="readable()"
+            [attr.aria-pressed]="readable()"
+            (click)="readable.set(true)"
+          >
+            Representación legible</button
+          ><button
+            class="tab flex-1"
+            [class.active]="!readable()"
+            [attr.aria-pressed]="!readable()"
+            (click)="readable.set(false)"
+          >
+            Cadena ficticia
+          </button>
+        </div>
+        <app-json-viewer [content]="json()" />
+      } @else if (kind() === 'request') {
+        <div
+          class="flex gap-1 overflow-x-auto border-b border-border pb-2"
+          aria-label="Secciones de la petición"
+        >
+          @for (item of ['Resumen', 'Headers', 'Request', 'Response']; track item) {
+            <button
+              class="tab"
+              [class.active]="tab() === item"
+              [attr.aria-pressed]="tab() === item"
+              (click)="tab.set(item)"
+            >
+              {{ item }}
+            </button>
+          }
+        </div>
+        @if (tab() !== 'Resumen') {
+          <app-json-viewer [content]="json()" />
+        }
+      }
+      @if (kind() !== 'decrypted' && (kind() !== 'request' || tab() === 'Resumen')) {
+        <dl
+          class="grid grid-cols-1 gap-x-6 gap-y-4 rounded-lg border border-border/70 bg-page/30 p-4 sm:grid-cols-2"
+        >
+          @for (column of definition().columns; track column.key) {
+            <div>
+              <dt class="mb-1 text-[11px] text-muted">{{ column.label }}</dt>
+              <dd class="break-words text-sm">
+                @if (column.kind === 'badge') {
+                  <app-status [label]="selected.row.cells[column.key]" />
+                } @else {
+                  {{ selected.row.cells[column.key] }}
+                }
+              </dd>
+            </div>
+          }
+        </dl>
+      }
+      @if (kind() === 'detail' && definition().icon === 'devices') {
+        <div>
+          <h3 class="mb-3 text-sm font-semibold">Eventos recientes de ejemplo</h3>
+          <div class="space-y-3 border-l border-border pl-4 text-xs text-muted">
+            <p><span class="text-success">10:42</span> · Conexión de prueba registrada</p>
+            <p><span class="text-info">09:18</span> · Sincronización de ejemplo completada</p>
+            <p>Hardware: DEMO-HW-001 · Red: Red ficticia</p>
+          </div>
+        </div>
+      }
+      @if (kind() === 'balance') {
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="text-xs text-muted" for="demo-amount"
+            >Cantidad de prueba · MXN<input
+              #amountInput
+              id="demo-amount"
+              class="field mt-2"
+              type="number"
+              min="0.01"
+              step="0.01"
+              inputmode="decimal"
+              [value]="amount()"
+              (input)="amount.set(amountInput.value)"
+              placeholder="0.00"
+              [attr.aria-invalid]="!!error()"
+              aria-describedby="amount-error" /></label
+          ><label class="text-xs text-muted" for="demo-concept"
+            >Concepto<input
+              #conceptInput
+              id="demo-concept"
+              class="field mt-2"
+              [value]="concept()"
+              (input)="concept.set(conceptInput.value)"
+              placeholder="Recarga de demostración"
+          /></label>
+        </div>
+        @if (error()) {
+          <p id="amount-error" role="alert" class="text-xs text-danger">{{ error() }}</p>
+        }
+        <div class="rounded-lg bg-page p-4 text-xs text-muted">
+          <div class="flex justify-between">
+            <span>Cantidad capturada</span><span class="text-ink">{{ amount() || '0.00' }} MXN</span>
+          </div>
+          <p class="mt-3">El saldo mostrado permanece sin cambios.</p>
+        </div>
+      }
+      @if (kind() === 'control') {
+        <fieldset>
+          <legend class="mb-3 text-sm font-medium">Selecciona una opción simulada</legend>
+          <div class="space-y-2">
+            @for (
+              option of ['Consultar conexión', 'Reiniciar dispositivo', 'Restringir acceso'];
+              track option
+            ) {
+              <label
+                class="flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border border-border px-4 py-3 text-sm hover:bg-hover"
+                ><input
+                  type="radio"
+                  name="device-control"
+                  class="accent-primary"
+                  [checked]="control() === option"
+                  (change)="control.set(option)"
+                />{{ option }}</label
+              >
+            }
+          </div>
+        </fieldset>
+      }
+      @if (kind() === 'review') {
+        <p class="text-sm leading-6 text-muted">
+          Documentación de ejemplo: completa. Identidad: ficticia. Tipo de revisión: demostración.
+        </p>
+        @if (reviewDecision()) {
+          <p class="rounded-lg border border-warning/30 bg-warning/10 p-4 text-sm text-warning">
+            Vas a simular {{ reviewDecision() }} esta solicitud. Su estado seguirá sin cambios.
+          </p>
+        }
+      }
+    </div>
+    <div class="flex flex-wrap items-center justify-end gap-3 border-t border-border p-5 sm:p-6">
+      <button class="btn" (click)="closed.emit()">
+        {{ kind() === 'detail' || kind() === 'request' || kind() === 'decrypted' ? 'Cerrar' : 'Cancelar' }}
+      </button>
+      @switch (kind()) {
+        @case ('delete') {
+          <button class="btn btn-danger" (click)="confirm()">
+            <app-icon name="trash" [size]="16" />Simular eliminación
+          </button>
+        }
+        @case ('unlock') {
+          <button class="btn btn-primary" (click)="confirm()">Simular desbloqueo</button>
+        }
+        @case ('balance') {
+          <button class="btn btn-primary" (click)="confirm()">Simular confirmación</button>
+        }
+        @case ('control') {
+          <button class="btn btn-primary" (click)="confirm()">Simular acción</button>
+        }
+        @case ('review') {
+          @if (reviewDecision()) {
+            <button class="btn btn-primary" (click)="confirm()">Confirmar simulación</button>
+          } @else {
+            <button class="btn btn-danger" (click)="reviewDecision.set('rechazar')">Simular rechazo</button
+            ><button class="btn btn-primary" (click)="reviewDecision.set('autorizar')">
+              Simular autorización
+            </button>
+          }
+        }
+      }
+    </div>
+  }
+</dialog>

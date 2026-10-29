@@ -1,0 +1,85 @@
+import { Metric } from '../shared/models';
+export const dashboardMetrics: readonly Metric[] = [
+  {
+    label: 'Dispositivos registrados',
+    value: '2,450',
+    note: '+186 respecto al mes anterior',
+    icon: 'devices',
+    trend: '8.2%',
+  },
+  {
+    label: 'Usuarios bloqueados',
+    value: '24',
+    note: '8 usuarios en revisión',
+    icon: 'users',
+    trend: '2.1%',
+    tone: 'warning',
+  },
+  {
+    label: 'Cuentas por autorizar',
+    value: '18',
+    note: '6 solicitudes nuevas hoy',
+    icon: 'shield',
+    trend: '4.3%',
+  },
+  {
+    label: 'Solicitudes API recientes',
+    value: '48,629',
+    note: '98.6% de solicitudes correctas',
+    icon: 'activity',
+    trend: '18.4%',
+  },
+];
+export const recentActivity = [
+  {
+    id: 'DEV-0842',
+    time: '10:42:08',
+    date: '29 oct 2026',
+    module: 'Dispositivos',
+    icon: 'devices',
+    event: 'Registro de dispositivo',
+    status: 'Correcta',
+    path: '/dispositivos',
+  },
+  {
+    id: 'SOL-0072',
+    time: '10:24:35',
+    date: '29 oct 2026',
+    module: 'Cuentas',
+    icon: 'shield',
+    event: 'Solicitud de autorización',
+    status: 'Pendiente',
+    path: '/cuentas/autorizacion',
+  },
+  {
+    id: 'USR-0204',
+    time: '09:32:12',
+    date: '29 oct 2026',
+    module: 'Usuarios',
+    icon: 'users',
+    event: 'Bloqueo preventivo',
+    status: 'En revisión',
+    path: '/usuarios/desbloqueo',
+  },
+  {
+    id: 'LOG-8010',
+    time: '09:18:46',
+    date: '29 oct 2026',
+    module: 'Auditoría',
+    icon: 'logs',
+    event: 'Petición de ejemplo · 403',
+    status: 'Error',
+    path: '/logs/apis',
+  },
+] as const;
+export const quickLinks = [
+  { title: 'Gestionar dispositivos', note: 'Consulta y control', icon: 'devices', path: '/dispositivos' },
+  { title: 'Revisar usuarios', note: 'Bloqueos y estado', icon: 'users', path: '/usuarios/desbloqueo' },
+  {
+    title: 'Autorizar cuentas',
+    note: '18 solicitudes pendientes',
+    icon: 'shield',
+    path: '/cuentas/autorizacion',
+  },
+  { title: 'Explorar logs', note: 'Peticiones y respuestas', icon: 'logs', path: '/logs/apis' },
+] as const;

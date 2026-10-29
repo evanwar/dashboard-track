@@ -1,0 +1,41 @@
+<svg viewBox="0 0 770 310" role="img" [attr.aria-label]="accessibleSummary()" class="w-full overflow-visible">
+  <defs>
+    <linearGradient id="area-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#86cee9" stop-opacity=".24" />
+      <stop offset="100%" stop-color="#86cee9" stop-opacity=".02" />
+    </linearGradient>
+    <linearGradient id="area-blue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6976ff" stop-opacity=".35" />
+      <stop offset="100%" stop-color="#6976ff" stop-opacity=".08" />
+    </linearGradient>
+  </defs>
+  @for (tick of ticks; track tick) {
+    <line x1="47" x2="734" [attr.y1]="270 - tick * 2.3" [attr.y2]="270 - tick * 2.3" class="grid-line" />
+    <text x="32" [attr.y]="274 - tick * 2.3" text-anchor="end" class="axis-label">{{ tick }}k</text>
+  }
+  @for (point of points(); track point.label) {
+    <line [attr.x1]="point.x" [attr.x2]="point.x" y1="40" y2="270" class="grid-line vertical" />
+    <text [attr.x]="point.x" y="298" text-anchor="middle" class="axis-label">{{ point.label }}</text>
+  }
+  <path [attr.d]="area()" fill="url(#area-sky)" />
+  <path [attr.d]="secondArea()" fill="url(#area-blue)" />
+  <path [attr.d]="line()" fill="none" stroke="#86cee9" stroke-width="2.5" stroke-linejoin="round" />
+  <path [attr.d]="secondLine()" fill="none" stroke="#6976ff" stroke-width="2.5" stroke-linejoin="round" />
+  @for (point of points(); track point.label; let index = $index) {
+    <circle [attr.cx]="point.x" [attr.cy]="point.y" r="4" fill="#d8f4ff" stroke="#86cee9" stroke-width="2.5">
+      <title>{{ point.label }}: {{ point.value * 100 }} solicitudes correctas</title>
+    </circle>
+    <circle
+      [attr.cx]="second()[index].x"
+      [attr.cy]="second()[index].y"
+      r="3.5"
+      fill="#d6daff"
+      stroke="#6976ff"
+      stroke-width="2.5"
+    >
+      <title>
+        {{ point.label }}: {{ (point.value * 0.54 + (index % 3) * 3) * 100 }} solicitudes fallidas de ejemplo
+      </title>
+    </circle>
+  }
+</svg>

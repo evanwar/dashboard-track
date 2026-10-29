@@ -1,0 +1,13 @@
+@reference "../../styles.css";
+.action-dialog {
+  @apply fixed m-auto max-h-[88dvh] w-[min(640px,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-2xl border border-border bg-surface p-0 text-ink shadow-2xl;
+}
+.action-dialog::backdrop {
+  background: rgb(7 14 26 / 78%);
+}
+.tab {
+  @apply min-h-11 whitespace-nowrap rounded-md px-3 py-2 text-xs text-muted hover:bg-hover hover:text-ink;
+}
+.tab.active {
+  @apply bg-hover text-ink;
+}
