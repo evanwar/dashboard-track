@@ -1,4 +1,4 @@
-import { AuthorizationRequest, BalanceAccount } from '../shared/models';
+import { AuthorizationRequest, BalanceAccount } from '../shared/models/app.models';
 export const accounts: readonly BalanceAccount[] = [
   {
     id: 'CTA-1058',

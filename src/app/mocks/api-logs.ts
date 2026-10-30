@@ -1,4 +1,4 @@
-import { ApiLog } from '../shared/models';
+import { ApiLog } from '../shared/models/app.models';
 export const apiLogs: readonly ApiLog[] = [
   {
     id: 'LOG-8012',

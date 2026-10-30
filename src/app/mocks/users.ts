@@ -1,4 +1,4 @@
-import { UserAccount } from '../shared/models';
+import { UserAccount } from '../shared/models/app.models';
 export const users: readonly UserAccount[] = [
   {
     id: 'USR-0204',

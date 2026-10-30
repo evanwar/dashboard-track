@@ -10,10 +10,10 @@ import {
   ActionModalComponent,
   ModalSelection,
 } from '../../../shared/components/action-modal/action-modal.component';
-import { UiService } from '../../../shared/ui.service';
+import { UiService } from '../../../core/services/ui.service';
 import { dashboardMetrics, recentActivity, quickLinks } from '../../../mocks/dashboard';
 import { moduleDefinitions } from '../../../mocks/modules';
-import { ModuleDefinition } from '../../../shared/models';
+import { ModuleDefinition } from '../../../shared/models/app.models';
 @Component({
   selector: 'app-dashboard-page',
   imports: [

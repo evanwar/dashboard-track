@@ -13,8 +13,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AppHeaderComponent } from '../app-header/app-header.component';
 import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
-import { UiService } from '../../../shared/ui.service';
-import { navigation } from '../../../shared/navigation';
+import { UiService } from '../../services/ui.service';
+import { navigation } from '../../config/navigation.config';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, AppHeaderComponent, AppSidebarComponent, IconComponent],

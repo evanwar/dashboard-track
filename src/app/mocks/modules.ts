@@ -1,4 +1,4 @@
-import { ModuleDefinition } from '../shared/models';
+import { ModuleDefinition } from '../shared/models/app.models';
 import { devices } from './devices';
 import { users } from './users';
 import { accounts, authorizations } from './accounts';

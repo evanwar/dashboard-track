@@ -1,4 +1,4 @@
-import { Device } from '../shared/models';
+import { Device } from '../shared/models/app.models';
 export const devices: readonly Device[] = [
   {
     id: 'DEV-0842',

@@ -8,8 +8,8 @@ import {
   ModalSelection,
 } from '../../../shared/components/action-modal/action-modal.component';
 import { moduleDefinitions } from '../../../mocks/modules';
-import { Action, DisplayRow } from '../../../shared/models';
-import { UiService } from '../../../shared/ui.service';
+import { Action, DisplayRow } from '../../../shared/models/app.models';
+import { UiService } from '../../../core/services/ui.service';
 @Component({
   selector: 'app-module-page',
   imports: [

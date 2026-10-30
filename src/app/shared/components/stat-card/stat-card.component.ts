@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
-import { Metric } from '../../models';
+import { Metric } from '../../models/app.models';
 @Component({
   selector: 'app-stat-card',
   imports: [IconComponent],

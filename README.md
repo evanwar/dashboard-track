@@ -46,9 +46,15 @@ Para publicarlo, crea un repositorio remoto vacío, agrega su URL como remoto `o
 - `src/app/features/dashboard/components`: gráficas, cada una en su carpeta.
 - `src/app/features/modules/module-page`: composición de los seis módulos de gestión usando definiciones tipadas.
 - `src/app/shared/components`: componentes de presentación, cada uno en su carpeta.
-- `src/app/shared`: modelos, navegación y servicio de notificaciones.
+- `src/app/core/config`: configuración de navegación.
+- `src/app/core/services`: servicio global de notificaciones.
+- `src/app/shared/models`: contratos y modelos actuales.
 - `src/app/mocks`: fixtures deterministas por dominio y configuración de tablas.
 - `src/styles.css`: tokens y primitivas reutilizables de Tailwind.
+
+También están preparadas las carpetas para servicios, entidades, modelos de vista, DTOs, mappers y estado por funcionalidad, además de guards, interceptores, providers, tokens, directivas, pipes, utilidades, validadores y configuración por entorno. Las carpetas vacías contienen `.gitkeep` para conservarlas en Git.
+
+Consulta [la guía de arquitectura](docs/arquitectura.md) para ver el árbol completo, las responsabilidades y las convenciones de nombres.
 
 Todo componente se ubica en una carpeta con su nombre, incluidos iconos y badges. Sus archivos relacionados permanecen juntos. Los componentes tienen TypeScript, HTML y CSS separados, salvo las plantillas diminutas de iconos y badges. Al agregar componentes, conserva esta convención y actualiza sus imports, rutas diferidas y referencias de estilos.
 

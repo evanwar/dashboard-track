@@ -10,11 +10,11 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { Action, DisplayRow, ModuleDefinition } from '../../models';
+import { Action, DisplayRow, ModuleDefinition } from '../../models/app.models';
 import { IconComponent } from '../icon/icon.component';
 import { StatusBadgeComponent } from '../status-badge/status-badge.component';
 import { JsonViewerComponent } from '../json-viewer/json-viewer.component';
-import { UiService } from '../../ui.service';
+import { UiService } from '../../../core/services/ui.service';
 import { encryptedMock, readableMock } from '../../../mocks/api-logs';
 export interface ModalSelection {
   row: DisplayRow;

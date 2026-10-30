@@ -1,4 +1,4 @@
-import { Metric } from '../shared/models';
+import { Metric } from '../shared/models/app.models';
 export const dashboardMetrics: readonly Metric[] = [
   {
     label: 'Dispositivos registrados',
